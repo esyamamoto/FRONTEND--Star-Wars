@@ -23,38 +23,38 @@ const columnFilter = [
 
 const useFilters = () => {
   const { planets, filterPlanets, setFilterPlanets } = useContext(GlobalContext);
-  const [selectedValues, setSelectedValues,
+  const [selectValue, setSelectValue,
   ] = useState<PlanetsCompareType>(INITIAL_STATE as PlanetsCompareType);
-  const [columnOptions, setColumnOptions] = useState(columnFilter);
-  const [filterOptions, setFilterOptions] = useState<PlanetsCompareType[]>([]);
+  const [columnInfo, setColumnInfo] = useState(columnFilter);
+  const [filterInfo, setFilterInfo] = useState<PlanetsCompareType[]>([]);
   const [order, setOrder] = useState<ListOrderType>(ORDER_STATE as ListOrderType);
 
   const filterByName = (filterS: string) => {
-    const filtered = planets
+    const filt = planets
       .filter((planet) => planet.name.toLocaleLowerCase()
         .includes(filterS.toLocaleLowerCase()));
-    setFilterPlanets(filtered);
+    setFilterPlanets(filt);
   };
 
   const handleChange = (
     event: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>,
   ) => {
     const { value, name } = event.target;
-    setSelectedValues({
-      ...selectedValues,
+    setSelectValue({
+      ...selectValue,
       [name]: value,
     });
   };
 
   const filterNumberValues = () => {
-    const { column, comparison, value } = selectedValues;
-    setFilterOptions([...filterOptions, selectedValues]);
-    const newColumnOp = columnOptions
+    const { column, comparison, value } = selectValue;
+    setFilterInfo([...filterInfo, selectValue]);
+    const newColumnOp = columnInfo
       .filter((option: string) => option !== column);
-    setColumnOptions(newColumnOp);
+    setColumnInfo(newColumnOp);
 
-    const planetsToFilter = filterPlanets.length > 0 ? filterPlanets : planets;
-    const filtered = planetsToFilter
+    const planetsFilter = filterPlanets.length > 0 ? filterPlanets : planets;
+    const filterBase = planetsFilter
       .filter((planet) => {
         if (comparison === 'maior que') {
           return Number(planet[column]) > Number(value);
@@ -66,7 +66,7 @@ const useFilters = () => {
         }
         return planet;
       });
-    setFilterPlanets(filtered);
+    setFilterPlanets(filterBase);
   };
 
   const removeFilter = (
@@ -75,19 +75,19 @@ const useFilters = () => {
   ) => {
     const { name } = event.target as HTMLButtonElement;
     if (name === 'removeFilters') {
-      setColumnOptions(columnFilter);
+      setColumnInfo(columnFilter);
       setFilterPlanets([]);
-      setFilterOptions([]);
+      setFilterInfo([]);
     } else if (name === 'X' && filter) {
-      setColumnOptions([...columnOptions, filter]);
-      const newFilterOp = filterOptions.filter(
+      setColumnInfo([...columnInfo, filter]);
+      const newFilterOp = filterInfo.filter(
         (option) => option.column !== filter,
       );
-      setFilterOptions(newFilterOp);
+      setFilterInfo(newFilterOp);
 
-      let filtered = planets;
+      let filt = planets;
       newFilterOp.forEach((option) => {
-        filtered = planets.filter((planet) => {
+        filt = planets.filter((planet) => {
           const { column, comparison, value } = option;
           if (comparison === 'maior que') {
             return Number(planet[column]) > Number(value);
@@ -99,11 +99,11 @@ const useFilters = () => {
           return true;
         });
       });
-      setFilterPlanets(filtered);
+      setFilterPlanets(filt);
     }
   };
 
-  const getOrder = (event: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
+  const getOrd = (event: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
     const { value, name } = event.target;
 
     if (name === 'columnSort' && value !== order.order.column) {
@@ -126,8 +126,8 @@ const useFilters = () => {
 
   const orderPlanets = () => {
     const { column, sort } = order.order;
-    const planetsToOrder = filterPlanets.length > 0 ? filterPlanets : planets;
-    const filteredPlanets = planetsToOrder
+    const planetsOrder = filterPlanets.length > 0 ? filterPlanets : planets;
+    const filteredPlanets = planetsOrder
       .filter((planet) => planet[column] !== 'unknown');
 
     filteredPlanets.sort((a, b) => {
@@ -148,10 +148,10 @@ const useFilters = () => {
     filterNumberValues,
     columnFilter,
     handleChange,
-    selectedValues,
-    columnOptions,
-    filterOptions,
-    getOrder,
+    selectValue,
+    columnInfo,
+    filterInfo,
+    getOrd,
     orderPlanets,
   };
 };

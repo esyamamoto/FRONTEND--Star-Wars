@@ -6,11 +6,11 @@ function Filters() {
     filterByName,
     handleChange,
     filterNumberValues,
-    columnOptions,
-    filterOptions,
+    columnInfo,
+    filterInfo,
     removeFilter,
     columnFilter,
-    getOrder,
+    getOrd,
     orderPlanets,
   } = useFilters();
 
@@ -35,7 +35,7 @@ function Filters() {
             data-testid="column-filter"
             onChange={ (event) => handleChange(event) }
           >
-            {columnOptions.map((columnValue, index) => (
+            {columnInfo.map((columnValue, index) => (
               <option key={ index } value={ columnValue }>
                 {columnValue}
               </option>
@@ -75,7 +75,7 @@ function Filters() {
           <select
             name="columnSort"
             data-testid="column-sort"
-            onChange={ (event) => getOrder(event) }
+            onChange={ (event) => getOrd(event) }
           >
             {columnFilter.map((columnValue, index) => (
               <option key={ index } value={ columnValue }>
@@ -88,7 +88,7 @@ function Filters() {
           <label htmlFor="ASCinput">
             ASCENDENTE
             <input
-              onChange={ (event) => getOrder(event) }
+              onChange={ (event) => getOrd(event) }
               type="radio"
               value="ASC"
               name="columnSortOrder"
@@ -100,7 +100,7 @@ function Filters() {
           <label htmlFor="DESCinput">
             DESCENDENTE
             <input
-              onChange={ (event) => getOrder(event) }
+              onChange={ (event) => getOrd(event) }
               type="radio"
               value="DESC"
               name="columnSortOrder"
@@ -131,9 +131,9 @@ function Filters() {
       </form>
 
       {/* Lista de filtros aplicados */}
-      {filterOptions.length > 0 && (
+      {filterInfo.length > 0 && (
         <ul>
-          {filterOptions.map((filter, index) => (
+          {filterInfo.map((filter, index) => (
             <li key={ index } data-testid="filter">
               {`${filter.column} ${filter.comparison} ${filter.value}`}
               <button
