@@ -19,7 +19,7 @@ function Filters() {
   return (
     <div>
       <form>
-        <label htmlFor="filterName">
+        <label htmlFor="filterByName">
           Name:
           <input
             type="text"
@@ -33,7 +33,7 @@ function Filters() {
           <select
             name="column"
             data-testid="column-filter"
-            onChange={ (e) => handleChange(e) }
+            onChange={ (event) => handleChange(event) }
           >
             {columnOptions.map((columnValue, index) => (
               <option key={ index } value={ columnValue }>
@@ -44,7 +44,7 @@ function Filters() {
           <select
             name="comparison"
             data-testid="comparison-filter"
-            onChange={ (e) => handleChange(e) }
+            onChange={ (event) => handleChange(event) }
           >
             { compareFilter.map((comparison, index) => (
               <option key={ index } value={ comparison }>
@@ -57,7 +57,7 @@ function Filters() {
             type="number"
             defaultValue={ 0 }
             data-testid="value-filter"
-            onChange={ (e) => handleChange(e) }
+            onChange={ (event) => handleChange(event) }
           />
 
           {/* Botão para aplicar o filtro numérico */}
@@ -75,7 +75,7 @@ function Filters() {
           <select
             name="columnSort"
             data-testid="column-sort"
-            onChange={ (e) => getOrder(e) }
+            onChange={ (event) => getOrder(event) }
           >
             {columnFilter.map((columnValue, index) => (
               <option key={ index } value={ columnValue }>
@@ -88,7 +88,7 @@ function Filters() {
           <label htmlFor="ASCinput">
             ASCENDENTE
             <input
-              onChange={ (e) => getOrder(e) }
+              onChange={ (event) => getOrder(event) }
               type="radio"
               value="ASC"
               name="columnSortOrder"

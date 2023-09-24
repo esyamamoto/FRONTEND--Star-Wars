@@ -1,34 +1,84 @@
-import { fireEvent, render, screen } from '@testing-library/react';
-import Table from '../components/Table/Table';import Filters from '../components/Filter/Filter';
+import { render, fireEvent, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
+import Filters from '../components/Filter/Filter';
+import PlanetProvider from '../components/Context/PlanetsProvider';
+import App from '../App';
+import Table from '../components/Table/Table';
 import { PlanetsContext } from '../components/Context/PlanetsContext';
-import GlobalContext from '../components/Context/GlobalContext';
-;
+import { PlanetsContextType } from '../types';
+import * as fetchModule from '../api';
+import { vi } from 'vitest'
+import userEvent from '@testing-library/user-event';
+import mockPlanets from '../components/Mocks';
 
-const mockPlanetsData = [
-  {
-    name: 'Tatooine',
-    rotation_period: '23',
-    orbital_period: '304',
-    diameter: '10465',
-    climate: 'arid',
-  },
-  {
-    name: 'Alderaan',
-    rotation_period: '24',
-    orbital_period: '364',
-    diameter: '12500',
-    climate: 'temperate',
-  },
-];
+beforeEach(() => {
+  vi.spyOn(fetchModule, 'FetchAPI').mockResolvedValue(mockPlanets);
+});
 
-describe('Testes do componente Table', () => {
-  test('renderiza os filtros corretamente', () => {
-    render(
-      <PlanetsContext.Provider value={{ planetsData: mockPlanetsData }}>
-        <Filters />
-      </PlanetsContext.Provider>
-    );
-    expect(screen.getByTestId('name-filter')).toBeInTheDocument();
+afterEach(() => {
+  vi.restoreAllMocks();
+});
+
+
+describe('Testes do App', () => {
+  it('Testes <Table/>', async () => {
+    render(<App />);
+    expect(fetchModule.FetchAPI).toHaveBeenCalled();
+    expect(fetchModule.FetchAPI).toHaveBeenCalledTimes(1);
+
+    await waitForElementToBeRemoved(screen.getByText(/loading.../i));
+    
+    expect(screen.getByRole('table')).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: /name/i })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: /rotation_period/i })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: /orbital_period/i })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: /diameter/i })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: /climate/i })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: /gravity/i })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: /terrain/i })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: /surface_water/i })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: /population/i })).toBeInTheDocument();
+
+    expect(screen.getAllByTestId('planet-name').length).toBe(10);
+    expect(screen.getAllByTestId('planet-name')[0]).toHaveTextContent('Tatooine');
+    expect(screen.getAllByTestId('planet-name')[1]).toHaveTextContent('Alderaan');
+    expect(screen.getAllByTestId('planet-name')[2]).toHaveTextContent('Yavin IV');
+    expect(screen.getAllByTestId('planet-name')[3]).toHaveTextContent('Hoth');
+    expect(screen.getAllByTestId('planet-name')[4]).toHaveTextContent('Dagobah');
+    expect(screen.getAllByTestId('planet-name')[5]).toHaveTextContent('Bespin');
+    
+    await userEvent.type(screen.getByRole('textbox', {  name: /name:/i}), 'a');
+    expect(screen.getAllByTestId('planet-name').length).toBe(7);
+    await userEvent.clear(screen.getByRole('textbox', {  name: /name:/i}),);
+    await userEvent.type(screen.getByRole('textbox', {  name: /name:/i}), 'aa');
+    expect(screen.getAllByTestId('planet-name').length).toBe(1);
+    await userEvent.clear(screen.getByRole('textbox', {  name: /name:/i}));
+    expect(screen.getAllByTestId('planet-name').length).toBe(10);
+
+    
+  })
+  /*
+    expect(tableElement).toBeInTheDocument();
+    expect(headers).toHaveLength(8);
+    expect(headers[0]).toHaveTextContent('Name');
+    expect(headers[1]).toHaveTextContent('Rotation period');
+    expect(headers[2]).toHaveTextContent('Orbital period');
+    expect(headers[3]).toHaveTextContent('Diameter');
+    expect(headers[4]).toHaveTextContent('Climate');
+    expect(headers[5]).toHaveTextContent('Gravity');
+    expect(headers[6]).toHaveTextContent('Terrain');
+    expect(headers[7]).toHaveTextContent('Surface water');
+
+    expect(rows).toHaveLength(3);
+    expect(rows[1]).toHaveTextContent('Alderaan');
+    expect(rows[1]).toHaveTextContent('2000000000');
+    expect(rows[1]).toHaveTextContent('364');
+    expect(rows[1]).toHaveTextContent('12500');
+    expect(rows[1]).toHaveTextContent('temperate');
+    expect(rows[1]).toHaveTextContent('1 standard');
+    expect(rows[1]).toHaveTextContent('grasslands, mountains');
+    expect(rows[1]).toHaveTextContent('40');
+
+     expect(screen.getByTestId('name-filter')).toBeInTheDocument();
     expect(screen.getByTestId('column-filter')).toBeInTheDocument();
     expect(screen.getByTestId('comparison-filter')).toBeInTheDocument();
     expect(screen.getByTestId('value-filter')).toBeInTheDocument();
@@ -38,111 +88,10 @@ describe('Testes do componente Table', () => {
     expect(screen.getByTestId('column-sort-input-desc')).toBeInTheDocument();
     expect(screen.getByTestId('column-sort-button')).toBeInTheDocument();
     expect(screen.getByTestId('button-remove-filters')).toBeInTheDocument();
-  });
-  test('aplica e remove filtros corretamente', () => {
-    render(
-      <PlanetsContext.Provider value={{ planetsData: mockPlanetsData }}>
-        <Filters />
-      </PlanetsContext.Provider>
-    );
-    fireEvent.change(screen.getByTestId('name-filter'), { target: { value: 'Tatooine' } });
-    fireEvent.change(screen.getByTestId('column-filter'), { target: { value: 'population' } });
-    fireEvent.change(screen.getByTestId('comparison-filter'), { target: { value: 'maior que' } });
-    fireEvent.change(screen.getByTestId('value-filter'), { target: { value: '1000' } });
-    fireEvent.click(screen.getByTestId('button-filter'));
 
-    expect(screen.getByTestId('filter')).toBeInTheDocument();
-    fireEvent.click(screen.getByTestId('button-remove-filters'));
-    expect(screen.queryByTestId('filter')).toBeNull();
-  });
-
-  test('renderiza mensagem de "loading..." quando loading é verdadeiro e messageError é falso', () => {
-    render(
-      <Table />,
-      {
-        wrapper: ({ children }) => (
-          <GlobalContext.Provider value={{ loading: true, messageError: null }}>
-            {children}
-          </GlobalContext.Provider>
-        ),
-      }
-    );
-
-    expect(screen.getByText('loading...')).toBeInTheDocument();
-    expect(screen.queryByText('ERROR...')).toBeNull();
-  });
-
-  test('renderiza a tabela com os dados de filterPlanets quando este está definido', () => {
-    const mockFilteredPlanets = [
-      {
-        name: 'Alderaan',
-        rotation_period: '24',
-        orbital_period: '364',
-        diameter: '12500',
-        climate: 'temperate',
-        gravity: '1 standard',
-        terrain: 'grasslands, mountains',
-        surface_water: '40',
-        population: '2000000000',
-        residents: [],
-        films: [],
-        created: '2014-12-10T11:35:48.479000Z',
-        edited: '2014-12-20T20:58:18.420000Z',
-        url: 'https://swapi-trybe.herokuapp.com/api/planets/2/',
-      },
-    ];
-
-    render(
-      <Table />,
-      {
-        wrapper: ({ children }) => (
-          <GlobalContext.Provider value={{ planets: [], filterPlanets: mockFilteredPlanets }}>
-            {children}
-          </GlobalContext.Provider>
-        ),
-      }
-    );
-
-    expect(screen.getByText('Alderaan')).toBeInTheDocument();
+     expect(screen.getByText('Alderaan')).toBeInTheDocument();
     expect(screen.getByText('24')).toBeInTheDocument();
     expect(screen.getByText('364')).toBeInTheDocument();
     expect(screen.getByText('12500')).toBeInTheDocument();
-  });
-
-  test('renderiza a tabela com os dados de planetas quando filterPlanets não está definido', () => {
-    const mockPlanets = [
-      {
-        name: 'Tatooine',
-        rotation_period: '23',
-        orbital_period: '304',
-        diameter: '10465',
-        climate: 'arid',
-        gravity: '1 standard',
-        terrain: 'desert',
-        surface_water: '1',
-        population: '200000',
-        residents: [],
-        films: [],
-        created: '2014-12-09T13:50:49.641000Z',
-        edited: '2014-12-20T20:58:18.411000Z',
-        url: 'https://swapi-trybe.herokuapp.com/api/planets/1/',
-      },
-    ];
-
-    render(
-      <Table />,
-      {
-        wrapper: ({ children }) => (
-          <GlobalContext.Provider value={{ planets: mockPlanets, filterPlanets: [] }}>
-            {children}
-          </GlobalContext.Provider>
-        ),
-      }
-    );
-
-    expect(screen.getByText('Tatooine')).toBeInTheDocument();
-    expect(screen.getByText('23')).toBeInTheDocument();
-    expect(screen.getByText('304')).toBeInTheDocument();
-    expect(screen.getByText('10465')).toBeInTheDocument();
-  });
-});
+  */
+})

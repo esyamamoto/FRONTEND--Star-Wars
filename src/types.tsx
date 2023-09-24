@@ -13,6 +13,10 @@ export type PlanetsType = {
   edited: string;
   url: string;
 };
+export type PlanetsContextType = {
+  planets: PlanetsType[];
+  setPlanets: (planets: PlanetsType[]) => void;
+};
 export type GlobalType = {
   planets: PlanetsType[];
   loading: boolean;
