@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import GlobalContext from '../components/Context/GlobalContext';
-import { PlanetsCompareType, ListOrderType, PlanetsType } from '../types';
+import { PlanetsCompareType, ListOrderType } from '../types';
 
 const ORDER_STATE = {
   order: {
