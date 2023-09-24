@@ -186,11 +186,4 @@ const mockPlanets = [
     url: 'https://swapi.dev/api/planets/10/',
   },
 ];
-const mockContextValue = {
-  planets: mockPlanets,
-  loading: false,
-  messageError: null,
-  filterPlanets: [],
-};
-
 export default mockPlanets;
