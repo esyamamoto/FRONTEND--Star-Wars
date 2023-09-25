@@ -13,7 +13,7 @@ const INITIAL_STATE = {
   comparison: 'maior que',
   value: 0,
 };
-const columnFilter = [
+const colFilter = [
   'population',
   'orbital_period',
   'diameter',
@@ -25,11 +25,11 @@ const useFilters = () => {
   const { planets, filterPlanets, setFilterPlanets } = useContext(GlobalContext);
   const [selectValue, setSelectValue,
   ] = useState<PlanetsCompareType>(INITIAL_STATE as PlanetsCompareType);
-  const [columnInfo, setColumnInfo] = useState(columnFilter);
+  const [colInfo, setColInfo] = useState(colFilter);
   const [filterInfo, setFilterInfo] = useState<PlanetsCompareType[]>([]);
   const [order, setOrder] = useState<ListOrderType>(ORDER_STATE as ListOrderType);
 
-  const filterByName = (filterS: string) => {
+  const filterName = (filterS: string) => {
     const filt = planets
       .filter((planet) => planet.name.toLocaleLowerCase()
         .includes(filterS.toLocaleLowerCase()));
@@ -46,12 +46,12 @@ const useFilters = () => {
     });
   };
 
-  const filterNumberValues = () => {
+  const filterNumber = () => {
     const { column, comparison, value } = selectValue;
     setFilterInfo([...filterInfo, selectValue]);
-    const newColumnOp = columnInfo
+    const newColumnOp = colInfo
       .filter((option: string) => option !== column);
-    setColumnInfo(newColumnOp);
+    setColInfo(newColumnOp);
 
     const planetsFilter = filterPlanets.length > 0 ? filterPlanets : planets;
     const filterBase = planetsFilter
@@ -75,11 +75,11 @@ const useFilters = () => {
   ) => {
     const { name } = event.target as HTMLButtonElement;
     if (name === 'removeFilters') {
-      setColumnInfo(columnFilter);
+      setColInfo(colFilter);
       setFilterPlanets([]);
       setFilterInfo([]);
     } else if (name === 'X' && filter) {
-      setColumnInfo([...columnInfo, filter]);
+      setColInfo([...colInfo, filter]);
       const newFilterOp = filterInfo.filter(
         (option) => option.column !== filter,
       );
@@ -144,12 +144,12 @@ const useFilters = () => {
 
   return {
     removeFilter,
-    filterByName,
-    filterNumberValues,
-    columnFilter,
+    filterName,
+    filterNumber,
+    colFilter,
     handleChange,
     selectValue,
-    columnInfo,
+    colInfo,
     filterInfo,
     getOrd,
     orderPlanets,

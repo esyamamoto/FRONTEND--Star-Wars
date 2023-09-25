@@ -3,13 +3,13 @@ import useFilters from '../../Hooks/filterHook';
 function Filters() {
   // Importa funções e estados relacionados aos filtros e à ordenação usando o hook useFilters.
   const {
-    filterByName,
+    filterName,
     handleChange,
-    filterNumberValues,
-    columnInfo,
+    filterNumber,
+    colInfo,
     filterInfo,
     removeFilter,
-    columnFilter,
+    colFilter,
     getOrd,
     orderPlanets,
   } = useFilters();
@@ -19,13 +19,13 @@ function Filters() {
   return (
     <div>
       <form>
-        <label htmlFor="filterByName">
+        <label>
           Name:
           <input
             type="text"
             id="filterByName"
             data-testid="name-filter"
-            onChange={ (event) => filterByName(event.target.value) }
+            onChange={ (event) => filterName(event.target.value) }
           />
         </label>
 
@@ -35,12 +35,13 @@ function Filters() {
             data-testid="column-filter"
             onChange={ (event) => handleChange(event) }
           >
-            {columnInfo.map((columnValue, index) => (
-              <option key={ index } value={ columnValue }>
-                {columnValue}
+            {colInfo.map((colValue, index) => (
+              <option key={ index } value={ colValue }>
+                {colValue}
               </option>
             ))}
           </select>
+
           <select
             name="comparison"
             data-testid="comparison-filter"
@@ -52,19 +53,21 @@ function Filters() {
               </option>
             ))}
           </select>
-          <input
-            name="value"
-            type="number"
-            defaultValue={ 0 }
-            data-testid="value-filter"
-            onChange={ (event) => handleChange(event) }
-          />
+          <label>
+            <input
+              name="value"
+              type="number"
+              defaultValue={ 0 }
+              data-testid="value-filter"
+              onChange={ (event) => handleChange(event) }
+            />
+          </label>
 
           {/* Botão para aplicar o filtro numérico */}
           <button
             type="button"
             data-testid="button-filter"
-            onClick={ filterNumberValues }
+            onClick={ filterNumber }
           >
             Filtrar
           </button>
@@ -77,9 +80,9 @@ function Filters() {
             data-testid="column-sort"
             onChange={ (event) => getOrd(event) }
           >
-            {columnFilter.map((columnValue, index) => (
-              <option key={ index } value={ columnValue }>
-                {columnValue}
+            {colFilter.map((colValue, index) => (
+              <option key={ index } value={ colValue }>
+                {colValue}
               </option>
             ))}
           </select>
