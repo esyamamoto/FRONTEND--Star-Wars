@@ -1,5 +1,8 @@
 .App {
   text-align: center;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
 }
 
 .App-logo {
@@ -7,34 +10,87 @@
   pointer-events: none;
 }
 
-@media ( prefers-reduced-motion : no-preference ) {
-
+@media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
 }
 
 .App-header {
-  align-items: center;
   background-color: #282c34;
   color: white;
   display: flex;
   flex-direction: column;
+  align-items: center;
   font-size: calc(10px + 2vmin);
-  justify-content: center;
   min-height: 100vh;
+  padding: 20px;
 }
 
 .App-link {
   color: #61dafb;
+  text-decoration: none;
+}
+
+.App-link:hover {
+  text-decoration: underline;
+}
+
+.filters {
+  margin-bottom: 20px;
+}
+
+.table {
+  margin-top: 20px;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+thead {
+  background-color: #007bff;
+  color: white;
+}
+
+th {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 2px solid #ddd;
+}
+
+td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+
+.table-loading,
+.table-error {
+  font-size: 18px;
+  margin: 20px;
+}
+
+.table-loading {
+  color: #007bff;
+}
+
+.table-error {
+  color: #dc3545;
 }
 
 @keyframes App-logo-spin {
-
   from {
     transform: rotate(0deg);
   }
-
   to {
     transform: rotate(360deg);
   }

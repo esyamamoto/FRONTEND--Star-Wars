@@ -4,6 +4,7 @@ import { PlanetsType } from './types';
 import Table from './components/Table/Table';
 import Filters from './components/Filter/Filter';
 import GlobalContext from './components/Context/GlobalContext';
+import './App.css';
 
 function App() {
   const [filterPlanets, setFilterPlanets] = useState<PlanetsType[]>([]);

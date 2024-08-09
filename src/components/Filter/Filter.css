@@ -1,0 +1,106 @@
+/* Estilo geral do formulário de filtros */
+form {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px; /* Diminuir o tamanho máximo */
+  margin: 0 auto;
+  padding: 15px; /* Reduzir o padding */
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+label {
+  margin-bottom: 8px; /* Reduzir a margem inferior */
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+  padding: 6px; /* Reduzir o padding */
+  margin: 5px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 100%;
+  font-size: 14px; /* Ajustar o tamanho da fonte */
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+button {
+  padding: 8px 12px; /* Reduzir o padding */
+  margin-top: 8px; /* Reduzir a margem superior */
+  border: none;
+  border-radius: 4px;
+  color: #ffffff;
+  background-color: #007bff;
+  cursor: pointer;
+  font-size: 14px; /* Ajustar o tamanho da fonte */
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button[name="removeFilters"] {
+  background-color: #dc3545;
+}
+
+button[name="removeFilters"]:hover {
+  background-color: #c82333;
+}
+
+div {
+  margin-bottom: 15px; /* Reduzir a margem inferior */
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  padding: 8px; /* Reduzir o padding */
+  margin-bottom: 5px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px; /* Ajustar o tamanho da fonte */
+}
+
+li button {
+  background: none;
+  border: none;
+  color: #dc3545;
+  cursor: pointer;
+  font-size: 14px; /* Ajustar o tamanho da fonte */
+}
+
+li button:hover {
+  color: #c82333;
+}
+
+@media (max-width: 600px) {
+  form {
+    padding: 10px; /* Ajustar o padding em dispositivos menores */
+  }
+
+  input[type="text"],
+  input[type="number"],
+  select {
+    font-size: 13px; /* Ajustar o tamanho da fonte */
+  }
+
+  button {
+    font-size: 13px; /* Ajustar o tamanho da fonte */
+  }
+}
