@@ -4,7 +4,7 @@
 <details>
 <summary><strong>👨‍💻 O que foi desenvolvido</strong></summary><br />
 Uma aplicação que consulta uma API para recuperar dados dos planetas do universo de Star Wars. Onde os dados retornados pela API usei para criar uma tabela com alguns filtros. Os planetas poderão ser filtrados por suas características, como população, período orbital, diâmetro e outras.
-
+Disponivel neste link: https://frontend-star-wars.vercel.app/
  </details>
 
 <details>
